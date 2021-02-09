@@ -3,12 +3,12 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class Lazers {
-    int nextXPosition = 0;
-    int currentXPosition = 0;
-    int currentYPosition = 0;
-    int nextYPosition = 0;
+    private int nextXPosition = 0;
+    private int currentXPosition = 0;
+    private int currentYPosition = 0;
+    private int nextYPosition = 0;
 
-    Random random = new Random();
+    private  Random random = new Random();
 
     public int getNextXPosition() {
         return nextXPosition;
@@ -31,7 +31,7 @@ public class Lazers {
         //lazerpick
         nextXPosition = random.nextInt(9);
         nextYPosition = random.nextInt(9);
-        notifyObservers();
+        notifyObservers(1);
 
     }
 
@@ -39,13 +39,14 @@ public class Lazers {
     public void lazerXAndYNowToNext() {
         currentXPosition = nextXPosition;
         currentYPosition = nextYPosition;
+        notifyObservers(2);
 
     }
     private ArrayList<LazerObserver> observers = new ArrayList<LazerObserver>();
 
-    private void notifyObservers() {
+    private void notifyObservers(int i) {
         for (LazerObserver observer : observers) {
-            observer.update();
+            observer.update(i);
         }
     }
     public void addLazerObserver(LazerObserver observer) {
@@ -56,6 +57,6 @@ public class Lazers {
         observers.remove(observer);
     }
     public interface LazerObserver {
-        public void update();
+        public void update(int i);
     }
 }

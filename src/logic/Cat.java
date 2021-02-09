@@ -1,7 +1,16 @@
 package logic;
 public class Cat {
-    public int x ;
-    public int y ;
+    private int x ;
+    private int y ;
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
     public Cat() {
          x = 2;
          y = 2;
@@ -32,7 +41,7 @@ public class Cat {
         return false;
     }
 
-    public void checkCoordinates(){
+    private void checkCoordinates(){
         if (x < 0){ x = 1; }
         if (y < 0){ y = 1; }
         if (x > 8){ x = 7; }

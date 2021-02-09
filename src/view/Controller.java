@@ -17,24 +17,24 @@ import logic.Score;
 import java.io.IOException;
 
 public class Controller {
-    Cat cat = new Cat();
-    Lazers lazers = new Lazers();
-    Score score = new Score();
-    private ImageView coinImageView = new ImageView();
+    private final Cat cat = new Cat();
+    private final Lazers lazers = new Lazers();
+    private final Score score = new Score();
+    private final ImageView coinImageView = new ImageView();
 
     @FXML
-    ImageView catImageView = new ImageView(new Image("assets/cat.png"));
+    private ImageView catImageView = new ImageView(new Image("assets/cat.png"));
     @FXML
-    ImageView[] lazerXNowGrid = new ImageView[9];
-    ImageView[] lazerXNextGrid = new ImageView[9];
-    ImageView[] lazerYNowGrid = new ImageView[9];
-    ImageView[] lazerYNextGrid = new ImageView[9];
+    private  ImageView[] lazerXNowGrid = new ImageView[9];
+    private ImageView[] lazerXNextGrid = new ImageView[9];
+    private ImageView[] lazerYNowGrid = new ImageView[9];
+    private ImageView[] lazerYNextGrid = new ImageView[9];
     @FXML
-    GridPane grid;
+    private GridPane grid;
     @FXML
-    AnchorPane pane = new AnchorPane();
+    private  AnchorPane pane = new AnchorPane();
     @FXML
-    Label left, right, up, down, deathcounter, scoreboard;
+    private  Label left, right, up, down, deathcounter, scoreboard;
 
     @FXML
     void createButton() {
@@ -91,32 +91,41 @@ public class Controller {
         lazers.addLazerObserver(new Lazers.LazerObserver() {
             //Anonymous inner class for handling updates from Lazers
             @Override
-            public void update() {
-                grid.getChildren().clear();
-                grid.add(catImageView, cat.x, cat.y);
+            public void update(int n) {
+                grid.getChildren().remove(catImageView);
+                grid.add(catImageView, cat.getX(), cat.getY());
                 //xxpictures
-                for (int i = 0; i < 9; i++) {
-                    grid.add(lazerXNowGrid[i], lazers.getCurrentXPosition(), i);
-                }
-                //ypictures
-                for (int i = 0; i < 9; i++) {
-                    if (i != lazers.getCurrentXPosition()) {
-                        grid.add(lazerYNowGrid[i], i, lazers.getCurrentYPosition());
+                if (n == 1){
+                    for (int i = 0; i < 9; i++) {
+                        grid.getChildren().remove(lazerXNowGrid[i]);
+                        grid.add(lazerXNowGrid[i], lazers.getCurrentXPosition(), i);
+                    }
+                    //ypictures
+                    for (int i = 0; i < 9; i++) {
+                        if (i != lazers.getCurrentXPosition()) {
+                            grid.getChildren().remove(lazerYNowGrid[i]);
+                            grid.add(lazerYNowGrid[i], i, lazers.getCurrentYPosition());
+                        }
+                    }
+                }else{
+                    //nextxtonow
+                    for (int i = 0; i < 9; i++) {
+                        grid.getChildren().remove(lazerXNextGrid[i]);
+                        grid.add(lazerXNextGrid[i], lazers.getNextXPosition(), i);
+                    }
+                    for (int i = 0; i < 9; i++) {
+                        if (i != lazers.getNextXPosition()) {
+                            grid.getChildren().remove(lazerYNextGrid[i]);
+                            grid.add(lazerYNextGrid[i], i, lazers.getNextYPosition());
+                        }
                     }
                 }
-                //nextxtonow
-                for (int i = 0; i < 9; i++) {
-                    grid.add(lazerXNextGrid[i], lazers.getNextXPosition(), i);
-                }
-                for (int i = 0; i < 9; i++) {
-                    if (i != lazers.getNextXPosition()) {
-                        grid.add(lazerYNextGrid[i], i, lazers.getNextYPosition());
-                    }
-                }
+
             }
         });
         lazers.lazerXAndYNowToNext();
         //addcoins
+        grid.getChildren().remove(coinImageView);
         grid.add(coinImageView, score.getX(), score.getY());
     }
 
@@ -128,7 +137,7 @@ public class Controller {
             scoreboard.setText("Your score is  " + score.getScoreCoutner());
         }
 
-    if(score.coinPickedOrNot(cat.x,cat.y)){
+    if(score.coinPickedOrNot(cat.getX(),cat.getY())){
         score.newRandomCoordinates();
         //newimage(); //kaldes via Observer i stedet for
         scoreboard.setText("Your score is  " + score.getScoreCoutner());
