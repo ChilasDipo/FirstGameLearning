@@ -24,8 +24,12 @@ public class Controller  {
     Cat cat = new Cat();
     Lazers lazers = new Lazers();
     Score score = new Score();
-    private ImageView imageView = new ImageView();
-    public ImageView getImageView() { return imageView; }
+    private ImageView coinImageView = new ImageView();
+    @FXML
+    ImageView[] imageview1to8 = new ImageView[9];
+    ImageView[] imageview10to18 = new ImageView[9];
+    ImageView[] imageview20to28 = new ImageView[9];
+    ImageView[] imageview30to38 = new ImageView[9];
     @FXML
     GridPane grid;
     @FXML
@@ -83,35 +87,39 @@ public class Controller  {
         updategrid(); }
 @FXML
 void updategrid(){
-    grid.getChildren().clear();
-    grid.add(cat.getImageView() ,cat.x,cat.y);
     //lazerpick
-   lazers.newrandomx();
-   lazers.newrandomy();
-    //xxpictures
-    for (int i = 0; i <9 ; i++) {
-       grid.add(getImageview1to8()[i],lazers.getLazerxnow(),i);
-    }
-    //ypictures
-    for (int i = 0; i <9 ; i++) {
-        if (i != lazers.getLazerxnow() ){
-            grid.add(getImageview20to28()[i],i,lazers.getLazerynow());
+     lazers.newrandomxandy();
+     lazers.addLazerObserver(new Lazers.LazerObserver() {
+        //Anonymous inner class for handling updates from Lazers
+        @Override
+        public void update() {
+            grid.getChildren().clear();
+            grid.add(cat.getImageView() ,cat.x,cat.y);
+            //xxpictures
+            for (int i = 0; i <9 ; i++) {
+                grid.add(imageview1to8[i],lazers.getLazerxnow(),i);
+            }
+            //ypictures
+            for (int i = 0; i <9 ; i++) {
+                if (i != lazers.getLazerxnow() ){
+                    grid.add(imageview20to28[i],i,lazers.getLazerynow());
+                }
+            }
+            //nextxtonow
+            for (int i = 0; i <9 ; i++) {
+                grid.add(imageview10to18[i], lazers.getLazerxnext(),i);
+            }
+            for (int i = 0; i <9 ; i++) {
+                if (i != lazers.getLazerxnext() ){
+                    grid.add(imageview30to38[i], i,lazers.getLazerynext());
+                }
+            }
         }
-    }
-    //nextxtonow
-    for (int i = 0; i <9 ; i++) {
-            grid.add(getImageview10to18()[i], lazers.getLazerxnext(),i);
-    }
-    lazers.lazerxnowtonext();
-    for (int i = 0; i <9 ; i++) {
-        if (i != lazers.getLazerxnext() ){
-            grid.add(getImageview30to38()[i], i,lazers.getLazerynext());
-        }
-    }
-    lazers.lazerynowtonext();
+     });
+    lazers.lazerxandynowtonext();
     //addcoins
     plusscore = score.getPlusscore() ;
-    grid.add(getImageView(), score.getX(), score.getY());
+    grid.add(coinImageView, score.getX(), score.getY());
 }
 @FXML
 void checkdeathandcoins(){
@@ -143,39 +151,16 @@ void resetgame(javafx.event.ActionEvent event)throws IOException {
     void newimage(){
         switch (plusscore) {
             case 0:
-                imageView.setImage(new Image("assets/bronze.png"));
+                coinImageView.setImage(new Image("assets/bronze.png"));
                 break;
             case 1:
-                imageView.setImage(new Image("assets/silver.png"));
+                coinImageView.setImage(new Image("assets/silver.png"));
                 break;
             case 2:
-                imageView.setImage(new Image("assets/gold.png"));
+                coinImageView.setImage(new Image("assets/gold.png"));
                 break;
         }
     }
-    @FXML
-    ImageView[] imageview1to8 = new ImageView[9];
-    ImageView[] imageview10to18 = new ImageView[9];
-    ImageView[] imageview20to28 = new ImageView[9];
-    ImageView[] imageview30to38 = new ImageView[9];
-
-
-    public ImageView[] getImageview1to8() {
-        return imageview1to8;
-    }
-
-    public ImageView[] getImageview10to18() {
-        return imageview10to18;
-    }
-
-    public ImageView[] getImageview20to28() {
-        return imageview20to28;
-    }
-
-    public ImageView[] getImageview30to38() {
-        return imageview30to38;
-    }
-
     public void xxpictures() {
         for (int i = 0; i < imageview1to8.length; i++) {
             imageview1to8[i] = new ImageView();

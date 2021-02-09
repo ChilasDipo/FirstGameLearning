@@ -1,4 +1,5 @@
 package logic;
+import java.util.ArrayList;
 import java.util.Random;
 
 public class Lazers {
@@ -7,8 +8,6 @@ public class Lazers {
     int lazerynow = 0;
     int lazerynext = 0;
     Random random = new Random();
-
-
     public Lazers() {
 
     }
@@ -30,21 +29,35 @@ public class Lazers {
     }
 
 
-    public void newrandomx() {
+    public void newrandomxandy() {
         //lazerpick
         lazerxnext = random.nextInt(9);
-    }
-
-    public void newrandomy() {
         lazerynext = random.nextInt(9);
+        notifyObservers();
+
     }
 
-    public void lazerxnowtonext() {
+
+    public void lazerxandynowtonext() {
         lazerxnow = lazerxnext;
-    }
-
-    public void lazerynowtonext() {
         lazerynow = lazerynext;
-    }
 
+    }
+    private ArrayList<LazerObserver> observers = new ArrayList<LazerObserver>();
+
+    private void notifyObservers() {
+        for (LazerObserver observer : observers) {
+            observer.update();
+        }
+    }
+    public void addLazerObserver(LazerObserver observer) {
+        if (!observers.contains(observers))
+            observers.add(observer);
+    }
+    public void removeLazerObserver(LazerObserver observer) {
+        observers.remove(observer);
+    }
+    public interface LazerObserver {
+        public void update();
+    }
 }

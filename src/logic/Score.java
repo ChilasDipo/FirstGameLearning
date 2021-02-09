@@ -13,7 +13,6 @@ public class Score {
         x =  random.nextInt(9);
         y =  random.nextInt(9);
         plusscore = random.nextInt(3);
-
         notifyObservers();
     }
     public int getX() {
