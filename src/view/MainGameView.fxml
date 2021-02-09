@@ -12,7 +12,7 @@
       <Label fx:id="left" layoutX="1092.0" layoutY="610.0" opacity="0.25" text="Left" />
       <Label fx:id="up" layoutX="1138.0" layoutY="581.0" opacity="0.25" prefHeight="17.0" prefWidth="29.0" text="up" />
       <Label fx:id="down" layoutX="1138.0" layoutY="610.0" opacity="0.25" text="Down" />
-      <Button fx:id="btn" layoutX="34.0" layoutY="14.0" mnemonicParsing="false" onAction="#createbutton" text="Start" />
+      <Button fx:id="btn" layoutX="34.0" layoutY="14.0" mnemonicParsing="false" onAction="#createButton" text="Start" />
       <GridPane fx:id="grid" gridLinesVisible="true" layoutX="114.0" layoutY="39.0" prefHeight="601.0" prefWidth="927.0">
         <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -41,7 +41,7 @@
          <font>
             <Font name="System Bold" size="20.0" />
          </font></Label>
-      <Button layoutX="1112.0" layoutY="129.0" mnemonicParsing="false" onAction="#resetgame" text="Resety" />
+      <Button layoutX="1112.0" layoutY="129.0" mnemonicParsing="false" onAction="#resetGame" text="Resety" />
       <Label fx:id="scoreboard" layoutX="1098.0" layoutY="297.0">
          <font>
             <Font name="System Bold" size="20.0" />

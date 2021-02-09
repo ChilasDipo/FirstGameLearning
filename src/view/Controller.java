@@ -1,5 +1,4 @@
 package view;
-
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -17,14 +16,14 @@ import logic.Lazers;
 import logic.Score;
 
 import java.io.IOException;
-public class Controller  {
-    int deathCounterInt = 0;
-    int scoreCounter = 0;
-    int plusScore = 0;
+public class Controller {
     Cat cat = new Cat();
     Lazers lazers = new Lazers();
     Score score = new Score();
     private ImageView coinImageView = new ImageView();
+
+    @FXML
+    ImageView catImageView = new ImageView(new Image("assets/cat.png"));
     @FXML
     ImageView[] lazerXNowGrid = new ImageView[9];
     ImageView[] lazerXNextGrid = new ImageView[9];
@@ -35,14 +34,12 @@ public class Controller  {
     @FXML
     AnchorPane pane = new AnchorPane();
     @FXML
-    Label left,right,up,down,deathcounter,scoreboard;
+    Label left, right, up, down, deathcounter, scoreboard;
+
     @FXML
-    void createbutton(){
+    void createButton() {
         Button btn = new Button("Ok");
-        xxpictures();
-        ypictures();
-        nextxtonow();
-        nextxtonowy();
+        addPictures();
         newScoreImage();
         score.addScoreObserver(new Score.ScoreObserver() {
             //Anonymous inner class for handling updates from Score
@@ -51,138 +48,130 @@ public class Controller  {
                 newScoreImage();
             }
         });
-        btn.setOnKeyPressed( event ->{
-            switch (event.getCode()){
+        btn.setOnKeyPressed(event -> {
+            switch (event.getCode()) {
                 case W:
                     up.setOpacity(1);
-                    cat.minusy();
+                    cat.minusY();
                     break;
                 case S:
                     down.setOpacity(1);
-                    cat.plusy();
+                    cat.plusY();
                     break;
                 case A:
                     left.setOpacity(1);
-                    cat.minusx();
+                    cat.minusX();
                     break;
                 case D:
                     right.setOpacity(1);
-                    cat.plusx();
+                    cat.plusX();
                     break;
-                }
+            }
         });
-        btn.setOnKeyReleased( event ->{
-                    right.setOpacity(0.25);
-                    up.setOpacity(0.25);
-                    down.setOpacity(0.25);
-                    left.setOpacity(0.25);
+        btn.setOnKeyReleased(event -> {
+            right.setOpacity(0.25);
+            up.setOpacity(0.25);
+            down.setOpacity(0.25);
+            left.setOpacity(0.25);
             mainGameLoop();
-                });
+        });
         pane.getChildren().add(btn);
     }
-@FXML
-    void mainGameLoop(){
+
+    @FXML
+    void mainGameLoop() {
         checkDeathAndCoins();
         cat.checkCoordinates();
-        updateGrid(); }
-@FXML
-void updateGrid(){
-    //lazerpick
-     lazers.newrandomxandy();
-     lazers.addLazerObserver(new Lazers.LazerObserver() {
-        //Anonymous inner class for handling updates from Lazers
-        @Override
-        public void update() {
-            grid.getChildren().clear();
-            grid.add(cat.getImageView() ,cat.x,cat.y);
-            //xxpictures
-            for (int i = 0; i <9 ; i++) {
-                grid.add(lazerXNowGrid[i],lazers.getLazerxnow(),i);
-            }
-            //ypictures
-            for (int i = 0; i <9 ; i++) {
-                if (i != lazers.getLazerxnow() ){
-                    grid.add(lazerYNowGrid[i],i,lazers.getLazerynow());
-                }
-            }
-            //nextxtonow
-            for (int i = 0; i <9 ; i++) {
-                grid.add(lazerXNextGrid[i], lazers.getLazerxnext(),i);
-            }
-            for (int i = 0; i <9 ; i++) {
-                if (i != lazers.getLazerxnext() ){
-                    grid.add(lazerYNextGrid[i], i,lazers.getLazerynext());
-                }
-            }
-        }
-     });
-    lazers.lazerxandynowtonext();
-    //addcoins
-    plusScore = score.getPlusscore() ;
-    grid.add(coinImageView, score.getX(), score.getY());
-}
-@FXML
-void checkDeathAndCoins(){
-    if (cat.deadornot(lazers.getLazerxnow(),lazers.getLazerynow())){
-        deathCounterInt++;
-        deathcounter.setText("Times died " + deathCounterInt);
-        if(deathCounterInt % 3 == 0){
-            scoreCounter = 0;
-            scoreboard.setText("Your score is  " + scoreCounter);
-        }
+        updateGrid();
     }
-    if (score.pickedornor(cat.x,cat.y)){
-        scoreCounter = scoreCounter + plusScore;
-        score.newrandomcoordinates();
+
+    @FXML
+    void updateGrid() {
+        //lazerpick
+        lazers.newRandomXAndY();
+        lazers.addLazerObserver(new Lazers.LazerObserver() {
+            //Anonymous inner class for handling updates from Lazers
+            @Override
+            public void update() {
+                grid.getChildren().clear();
+                grid.add(catImageView, cat.x, cat.y);
+                //xxpictures
+                for (int i = 0; i < 9; i++) {
+                    grid.add(lazerXNowGrid[i], lazers.getCurrentXPosition(), i);
+                }
+                //ypictures
+                for (int i = 0; i < 9; i++) {
+                    if (i != lazers.getCurrentXPosition()) {
+                        grid.add(lazerYNowGrid[i], i, lazers.getCurrentYPosition());
+                    }
+                }
+                //nextxtonow
+                for (int i = 0; i < 9; i++) {
+                    grid.add(lazerXNextGrid[i], lazers.getNextXPosition(), i);
+                }
+                for (int i = 0; i < 9; i++) {
+                    if (i != lazers.getNextXPosition()) {
+                        grid.add(lazerYNextGrid[i], i, lazers.getNextYPosition());
+                    }
+                }
+            }
+        });
+        lazers.lazerXAndYNowToNext();
+        //addcoins
+        grid.add(coinImageView, score.getX(), score.getY());
+    }
+
+    @FXML
+    void checkDeathAndCoins() {
+        if (cat.deadOrNot(lazers.getCurrentXPosition(), lazers.getCurrentYPosition())) {
+            score.death();
+            deathcounter.setText("Times died " + score.getDeathCounterInt());
+            scoreboard.setText("Your score is  " + score.getScoreCoutner());
+        }
+
+    if(score.coinPickedOrNot(cat.x,cat.y)){
+        score.newRandomCoordinates();
         //newimage(); //kaldes via Observer i stedet for
-        scoreboard.setText("Your score is  " + scoreCounter);
+        scoreboard.setText("Your score is  " + score.getScoreCoutner());
     }
-}
+    }
+
 @FXML
-void resetgame(javafx.event.ActionEvent event)throws IOException {
+void resetGame(javafx.event.ActionEvent event)throws IOException {
         //not correct way to reset game, but it works for now
-        Parent blah = FXMLLoader.load(getClass().getResource("../sample.fxml"));
-        Scene scene = new Scene(blah);
+        Parent root = FXMLLoader.load(getClass().getResource("MainGameView.fxml"));
+        Scene scene = new Scene(root);
         Stage appStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         appStage.setScene(scene);
         appStage.show();
     }
 
     void newScoreImage(){
-        switch (plusScore) {
-            case 0:
+        switch (score.getPlusScore()) {
+            case 1:
                 coinImageView.setImage(new Image("assets/bronze.png"));
                 break;
-            case 1:
+            case 2:
                 coinImageView.setImage(new Image("assets/silver.png"));
                 break;
-            case 2:
+            case 3:
                 coinImageView.setImage(new Image("assets/gold.png"));
                 break;
         }
     }
-    public void xxpictures() {
+    public void addPictures() {
         for (int i = 0; i < lazerXNowGrid.length; i++) {
             lazerXNowGrid[i] = new ImageView();
             lazerXNowGrid[i].setImage(new Image("assets/Lazer.png", 100, 100, false, false));
         }
-    }
-
-    public void ypictures() {
         for (int i = 0; i < lazerYNowGrid.length; i++) {
             lazerYNowGrid[i] = new ImageView();
             lazerYNowGrid[i].setImage(new Image("assets/Lazeryværdi.png", 100, 100, false, false));
         }
-    }
-
-    public void nextxtonow() {
         for (int i = 0; i < lazerXNextGrid.length; i++) {
             lazerXNextGrid[i] = new ImageView();
             lazerXNextGrid[i].setImage(new Image("assets/Lazernext.png", 100, 100, false, false));
         }
-    }
-
-    public void nextxtonowy() {
         for (int i = 0; i < lazerYNextGrid.length; i++) {
             lazerYNextGrid[i] = new ImageView();
             lazerYNextGrid[i].setImage(new Image("assets/Lazeryværdinext.png", 100, 100, false, false));

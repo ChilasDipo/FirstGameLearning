@@ -3,44 +3,42 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class Lazers {
-    int lazerxnext = 0;
-    int lazerxnow = 0;
-    int lazerynow = 0;
-    int lazerynext = 0;
+    int nextXPosition = 0;
+    int currentXPosition = 0;
+    int currentYPosition = 0;
+    int nextYPosition = 0;
+
     Random random = new Random();
-    public Lazers() {
 
+    public int getNextXPosition() {
+        return nextXPosition;
     }
 
-    public int getLazerxnext() {
-        return lazerxnext;
+    public int getCurrentXPosition() {
+        return currentXPosition;
     }
 
-    public int getLazerxnow() {
-        return lazerxnow;
+    public int getCurrentYPosition() {
+        return currentYPosition;
     }
 
-    public int getLazerynow() {
-        return lazerynow;
-    }
-
-    public int getLazerynext() {
-        return lazerynext;
+    public int getNextYPosition() {
+        return nextYPosition;
     }
 
 
-    public void newrandomxandy() {
+    public void newRandomXAndY() {
         //lazerpick
-        lazerxnext = random.nextInt(9);
-        lazerynext = random.nextInt(9);
+        nextXPosition = random.nextInt(9);
+        nextYPosition = random.nextInt(9);
         notifyObservers();
 
     }
 
 
-    public void lazerxandynowtonext() {
-        lazerxnow = lazerxnext;
-        lazerynow = lazerynext;
+    public void lazerXAndYNowToNext() {
+        currentXPosition = nextXPosition;
+        currentYPosition = nextYPosition;
 
     }
     private ArrayList<LazerObserver> observers = new ArrayList<LazerObserver>();

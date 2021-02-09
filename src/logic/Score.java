@@ -1,18 +1,28 @@
 package logic;
-
 import java.util.ArrayList;
 import java.util.Random;
 public class Score {
-   private int x;
+    private int deathCounterInt;
+    private int scoreCoutner;
+
+    public int getScoreCoutner() {
+        return scoreCoutner;
+    }
+
+    public int getDeathCounterInt() {
+        return deathCounterInt;
+    }
+
+    private int x;
     private  int y;
     private Random random = new Random();
-    private int plusscore;
-    public int getPlusscore() { return plusscore+1; }
-    public Score() { newrandomcoordinates(); }
-    public void newrandomcoordinates(){
+    private int plusScore;
+    public int getPlusScore() { return plusScore; }
+    public Score() { newRandomCoordinates(); }
+    public void newRandomCoordinates(){
         x =  random.nextInt(9);
         y =  random.nextInt(9);
-        plusscore = random.nextInt(3);
+        plusScore = random.nextInt(3)+1;
         notifyObservers();
     }
     public int getX() {
@@ -22,9 +32,10 @@ public class Score {
     public int getY() {
         return y;
     }
-    public Boolean pickedornor(int cx, int cy){
+    public Boolean coinPickedOrNot(int cx, int cy){
         if (x == cx & y == cy ){
             System.out.println("plus one in score");
+            scoreCoutner = scoreCoutner + plusScore;
             return true;
         }
         return false;
@@ -50,4 +61,11 @@ public class Score {
     public interface ScoreObserver {
         public void update();
     }
+    public void death() {
+        deathCounterInt++;
+        if(deathCounterInt % 3 == 0) {
+            scoreCoutner = 0;
+    }
+}
+
 }

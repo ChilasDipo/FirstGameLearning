@@ -1,43 +1,29 @@
 package logic;
-
-import javafx.fxml.FXML;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-
 public class Cat {
     public int x ;
     public int y ;
-
-    public ImageView getImageView() {
-        return imageView;
-    }
-
-    @FXML
-    ImageView imageView = new ImageView();
-
     public Cat() {
          x = 2;
          y = 2;
-        imageView.setImage(new Image("assets/cat.png"));
     }
 
-    public void plusx(){
+    public void plusX(){
         x++;
     }
 
-    public void plusy(){
+    public void plusY(){
         y++;
     }
 
-    public void minusx(){
+    public void minusX(){
         x--;
     }
 
-    public void minusy(){
+    public void minusY(){
         y--;
     }
 
-    public Boolean deadornot(int lx , int yl){
+    public Boolean deadOrNot(int lx , int yl){
         if (x == lx | y == yl ){
             System.out.println("you died");
             return true;
