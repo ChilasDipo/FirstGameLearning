@@ -8,19 +8,20 @@ public class Cat {
     }
 
     public void plusX(){
-        x++;
+        x++;checkCoordinates();
     }
 
     public void plusY(){
-        y++;
+        y++;checkCoordinates();
     }
 
     public void minusX(){
-        x--;
+        x--;checkCoordinates();
     }
 
     public void minusY(){
         y--;
+        checkCoordinates();
     }
 
     public Boolean deadOrNot(int lx , int yl){
@@ -32,9 +33,9 @@ public class Cat {
     }
 
     public void checkCoordinates(){
-        if (x < 0){ x = 0; }
-        if (y < 0){ y = 0; }
-        if (x > 8){ x = 8; }
-        if (y > 8){ y = 8; }
+        if (x < 0){ x = 1; }
+        if (y < 0){ y = 1; }
+        if (x > 8){ x = 7; }
+        if (y > 8){ y = 7; }
     }
 }

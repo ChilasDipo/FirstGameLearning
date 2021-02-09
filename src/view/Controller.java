@@ -14,8 +14,8 @@ import javafx.stage.Stage;
 import logic.Cat;
 import logic.Lazers;
 import logic.Score;
-
 import java.io.IOException;
+
 public class Controller {
     Cat cat = new Cat();
     Lazers lazers = new Lazers();
@@ -81,7 +81,6 @@ public class Controller {
     @FXML
     void mainGameLoop() {
         checkDeathAndCoins();
-        cat.checkCoordinates();
         updateGrid();
     }
 
@@ -178,3 +177,22 @@ void resetGame(javafx.event.ActionEvent event)throws IOException {
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
